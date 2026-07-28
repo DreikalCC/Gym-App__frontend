@@ -17,10 +17,8 @@ export function DemoAccounts() {
     return null;
   }
 
-  function copyCredentials(account) {
-    const credentials = `${account.email}\nPassword: ${account.password}`;
-
-    navigator.clipboard.writeText(credentials).then(() => {
+  function copyEmail(account) {
+    navigator.clipboard.writeText(account.email).then(() => {
       setCopiedAccount(account.email);
       window.setTimeout(() => setCopiedAccount(''), 1600);
     });
@@ -58,8 +56,8 @@ export function DemoAccounts() {
                 className='demo-accounts__account'
                 type='button'
                 key={account.email}
-                onClick={() => copyCredentials(account)}
-                title='Copy login credentials'
+                onClick={() => copyEmail(account)}
+                title='Copy email address'
               >
                 <span>
                   <strong>{account.role}</strong>
