@@ -9,7 +9,6 @@
 
 [functions]
   node_bundler = "esbuild"
-  external_node_modules = ["express", "mongoose"]
 
 [[redirects]]
   from = "/api/*"
@@ -21,4 +20,3 @@
   from = "/*"
   to = "/index.html"
   status = 200
-
