@@ -2,6 +2,35 @@
 
 App designed for trainers to gice a routine to their trainees, and allow the trainees to keep track of their daily routine
 
+## Netlify full-stack deployment
+
+The repository now deploys as one Netlify project:
+
+- Create React App builds from `frontend/` into `frontend/build/`.
+- Express runs inside a Netlify Function.
+- Requests under `/api/*` are rewritten to the API function.
+- React Router routes fall back to `index.html`.
+- MongoDB runs externally in MongoDB Atlas.
+
+Required Netlify environment variables:
+
+- `MONGODB_URI`: MongoDB Atlas connection string for the `gym-app` database.
+- `JWT_SECRET`: a long random server-only signing secret.
+
+Do not prefix either secret with `REACT_APP_`. The frontend uses the same-origin
+`/api` URL by default, so no production frontend environment variable is needed.
+
+For local validation:
+
+```bash
+cd frontend
+npm install
+netlify dev
+```
+
+Copy `frontend/.env.example` to `frontend/.env` and replace the placeholders
+before running locally. Do not commit the `.env` file.
+
 Aplicación sencilla para gimnasios, donde los usuarios pueden registrarse y seleccionar a su entrenador para recibir su rutina de ejercicios por parte del entrenador seleccionado.
 
 A su vez los entrenadores se pueden registrar y verificar que son entrenadores ingresando el codigo "Train", los entrenadores pueden ver la lista de usuarios que los han seleccionado,

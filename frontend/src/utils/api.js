@@ -131,10 +131,8 @@ class Api {
   }
 }
 const api = new Api({
-  address: 'https://api.boukenshagym.boukensha.site',
-  token: '04346056-dea4-4d40-8541-43203e80bf1',
+  address: process.env.REACT_APP_API_URL || '/api',
   headers: {
-    Authorization: '04346056-dea4-4d40-8541-43203e80bf1',
     'Content-Type': 'application/json',
   },
 });
