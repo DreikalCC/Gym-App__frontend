@@ -4,7 +4,7 @@
   line-height: 1.4rem;
   margin: 0;
   padding: 67px 0 60px;
-  color:#000;
+  color: var(--color-muted);
 }
 
 @media screen and (max-width:585px){

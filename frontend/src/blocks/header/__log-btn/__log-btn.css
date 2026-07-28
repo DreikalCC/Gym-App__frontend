@@ -2,7 +2,11 @@
   width: fit-content;
   border: none;
   background-color: unset;
-  color: black;
+  color: var(--color-primary);
   cursor: pointer;
   justify-self: center;
+}
+
+.header__log-btn:hover {
+  color: var(--color-primary-hover);
 }

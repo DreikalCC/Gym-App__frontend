@@ -1,8 +1,8 @@
 .edit__submit-btn {
   padding: 0;
-  border: 1px solid black;
-  color: black;
-  background-color: aqua;
+  border: 1px solid var(--color-primary);
+  color: white;
+  background-color: var(--color-primary);
   width: 358px;
   height: 50px;
   align-self: center;
@@ -13,8 +13,9 @@
 }
 
 .edit__submit-btn:hover {
-  transition: 0.5s;
-  opacity: 0.8;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  background-color: var(--color-primary-hover);
+  transform: translateY(-1px);
   cursor: pointer;
 }
 
