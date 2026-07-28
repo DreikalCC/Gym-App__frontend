@@ -194,6 +194,24 @@ app.get(
     res.send({ status: true, data });
   })
 );
+app.patch(
+  "/api/users/me",
+  celebrate({
+    body: Joi.object({
+      name: Joi.string().required().min(2).max(30),
+      lastname: Joi.string().required().min(2).max(30),
+    }),
+  }),
+  asyncRoute(async (req, res) => {
+    const data = await User.findByIdAndUpdate(
+      req.user._id,
+      { name: req.body.name, lastname: req.body.lastname },
+      { new: true, runValidators: true }
+    );
+    if (!data) throw new HttpError(404, "No se ha encontrado ningÃºn usuario");
+    res.send({ status: true, data });
+  })
+);
 app.put(
   "/api/users/me/trainer",
   asyncRoute(async (req, res) => {
