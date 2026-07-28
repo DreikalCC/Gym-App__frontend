@@ -14,6 +14,7 @@ import { Login } from './Login';
 import { Register } from './Register';
 import { InfoTooltip } from './InfoTooltip';
 import { Trainers } from './Trainers';
+import { DemoAccounts } from './DemoAccounts';
 
 export default function App() {
   const navigate = useNavigate();
@@ -311,6 +312,7 @@ export default function App() {
           selectedUser={userIdExercise}
           onConfirm={handleEraseExercise}
         />
+        <DemoAccounts />
         <Footer />
       </div>
     </CurrentUserContext.Provider>

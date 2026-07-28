@@ -21,7 +21,7 @@ class HttpError extends Error {
 const userSchema = new mongoose.Schema({
   name: { type: String, minlength: 2, maxlength: 30, default: "Jacques" },
   lastname: { type: String, minlength: 2, maxlength: 30, default: "Cousteau" },
-  role: { type: String, minlength: 2, maxlength: 30, default: "Trainee" },
+  role: { type: String, minlength: 2, maxlength: 30, default: "trainee" },
   email: {
     type: String,
     required: [true, "Email requerido"],
@@ -139,7 +139,7 @@ app.post(
     body: Joi.object({
       name: Joi.string().required().min(2).max(30),
       lastname: Joi.string().required().min(2).max(30),
-      role: Joi.string().required().valid("Trainer", "Trainee"),
+      role: Joi.string().required().valid("trainer", "trainee"),
       email: Joi.string().required().email(),
       password: Joi.string().required().min(6),
     }),
@@ -290,4 +290,3 @@ app.use((err, req, res, next) => {
 });
 
 export default withLambda(serverless(app));
-

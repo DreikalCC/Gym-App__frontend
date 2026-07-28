@@ -16,6 +16,7 @@
 
 @import url(./blocks/credentials/credentials.css);
 @import url(./blocks/credentials/__link/__link.css);
+@import url(./blocks/demo-accounts/demo-accounts.css);
 
 @import url(./blocks/profile/profile.css);
 @import url(./blocks/profile/__add-button/__add-button.css);
