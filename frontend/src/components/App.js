@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import api from '../utils/api';
 import * as auth from '../utils/auth';
 import { Route, Routes, useNavigate, Navigate } from 'react-router-dom';
@@ -26,6 +26,7 @@ export default function App() {
   const [success, setSuccess] = React.useState(false);
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [token, setToken] = React.useState(localStorage.getItem('jwt'));
+  const [isAuthChecking, setIsAuthChecking] = React.useState(Boolean(token));
 
   //data
   const [description, setDescription] = React.useState('');
@@ -42,31 +43,44 @@ export default function App() {
   const [currentUser, setCurrentUser] = React.useState({});
   const [userIdExercise, setUserIdExercise] = React.useState('');
 
-  //functionality
-  const handleTokenCheckMemo = useCallback((token) => {
-    if (!token) return;
-    auth.checkToken(token).then((res) => {
-      if (res.status === true) {
-        setLoggedIn(true);
-      }
-    });
-    //eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   React.useEffect(() => {
-    if (!token) return;
-    userPromise(token);
-    handleTokenCheckMemo(token);
-    setTimeout(() => {
-      navigate('/');
-    }, 500);
+    if (!token) {
+      setIsAuthChecking(false);
+      return;
+    }
 
-    //eslint-disable-next-line react-hooks/exhaustive-deps
+    let isActive = true;
+    setIsAuthChecking(true);
+
+    Promise.all([auth.checkToken(token), userPromise(token)])
+      .then(([tokenResponse]) => {
+        if (isActive && tokenResponse.status === true) {
+          setLoggedIn(true);
+        }
+      })
+      .catch(() => {
+        if (isActive) {
+          localStorage.removeItem('jwt');
+          setToken(null);
+          setLoggedIn(false);
+        }
+      })
+      .finally(() => {
+        if (isActive) {
+          setIsAuthChecking(false);
+        }
+      });
+
+    return () => {
+      isActive = false;
+    };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 
   function userPromise(token) {
     if (token) {
-      Promise.all([
+      return Promise.all([
         api.getUserInfo(token),
         api.getAllUsers(token),
         api.getAllExercises(token),
@@ -84,6 +98,7 @@ export default function App() {
           console.log(err);
         });
     }
+    return Promise.resolve();
   }
 
   function handleTrainerSelect(trainer) {
@@ -156,8 +171,7 @@ export default function App() {
       .then((data) => {
         setToken(data.token);
         setCurrentUser(data.user);
-      })
-      .then(() => {
+        setLoggedIn(true);
         navigate('/');
       })
       .catch((err) => {
@@ -278,7 +292,15 @@ export default function App() {
 
           <Route
             path='/login'
-            element={<Login onLoginSubmit={handleLoginSubmit} />}
+            element={
+              isAuthChecking ? (
+                <p className='credentials'>Loading your account...</p>
+              ) : loggedIn ? (
+                <Navigate to='/' replace />
+              ) : (
+                <Login onLoginSubmit={handleLoginSubmit} />
+              )
+            }
           />
           <Route
             path='/signup'
@@ -296,7 +318,15 @@ export default function App() {
           />
           <Route
             path='/'
-            element={loggedIn ? <GymRouter /> : <Navigate to='/login' />}
+            element={
+              isAuthChecking ? (
+                <p className='credentials'>Loading your account...</p>
+              ) : loggedIn ? (
+                <GymRouter />
+              ) : (
+                <Navigate to='/login' replace />
+              )
+            }
           />
         </Routes>
 

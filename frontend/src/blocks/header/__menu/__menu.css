@@ -10,6 +10,7 @@
   cursor: pointer;
   transition: all 0.1s linear;
   border: none;
+  filter: invert(1);
 }
 
 @media screen and (max-width: 550px) {
